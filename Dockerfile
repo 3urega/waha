@@ -1,6 +1,6 @@
 FROM devlikeapro/waha
 
-# Instala dependencias necesarias para Chromium
+# Instala dependencias necesarias para Chromium y Puppeteer
 RUN apt-get update && apt-get install -y \
   fonts-liberation \
   libappindicator3-1 \
@@ -16,11 +16,14 @@ RUN apt-get update && apt-get install -y \
   libxcomposite1 \
   libxdamage1 \
   libxrandr2 \
-  xdg-utils --no-install-recommends
+  xdg-utils \
+  ca-certificates \
+  wget \
+  --no-install-recommends
 
-# Puppeteer / Chromium settings
+# Instala Puppeteer para producción
+RUN npm install puppeteer@latest --only=prod
+
+# Establece las variables necesarias para Puppeteer
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV CHROME_BIN=/usr/bin/chromium-browser
-
-# Añade Puppeteer configurado para headless
-RUN npm install puppeteer --save
